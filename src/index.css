@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #27AAE1;
+  --color-brand-primary-dark: #1E8DBE;
+  --color-brand-bg: #ffffff;
+  --color-brand-surface: #f8fafc;
+  --color-brand-surface-2: #e2e8f0;
+  --color-brand-text: #111111;
+  --color-brand-text-muted: #555555;
+
+  --font-heading: "Outfit", sans-serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+::selection {
+  background-color: var(--color-brand-primary);
+  color: var(--color-brand-bg);
+}
