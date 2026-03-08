@@ -137,15 +137,15 @@ function App() {
       {/* ── Navbar ─────────────────────────────────────────────── */}
       <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.06)] py-3' : 'bg-transparent py-5'}`}>
         <div className="container mx-auto px-6 max-w-7xl flex justify-between items-center">
-          <div className="flex items-center gap-3 z-10">
+          <div className="flex items-center gap-2 z-10">
             <motion.div
-              whileHover={{ scale: 1.08 }}
+              whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 300 }}
-              className={`w-14 h-14 rounded-full flex items-center justify-center shadow-md transition-colors duration-300 overflow-hidden ${isScrolled ? 'bg-white' : 'bg-white/20 backdrop-blur-md border border-white/20'}`}
+              className={`w-20 md:w-28 h-16 md:h-20 flex items-center justify-center transition-colors duration-300 ${isScrolled ? '' : ''}`}
             >
-              <img src="./assets/logo.PNG" alt="Hyle Laban Logo" className="w-full h-full object-cover" />
+              <img src="./assets/logo.png" alt="Hyle Laban Logo" className="w-full h-full object-contain" />
             </motion.div>
-            <span className={`text-2xl font-heading font-black tracking-tight uppercase transition-colors duration-300 ${isScrolled ? 'text-brand-text' : 'text-white'}`}>
+            <span className={`text-3xl font-heading font-black tracking-tight uppercase transition-colors duration-300 -ml-2 ${isScrolled ? 'text-brand-text' : 'text-white'}`}>
               Hyle Laban
             </span>
           </div>
@@ -197,9 +197,6 @@ function App() {
                   className="text-3xl font-heading font-bold text-brand-text border-b border-gray-100 pb-4 w-full"
                 >{item}</motion.a>
               ))}
-            </div>
-            <div className="mt-12 w-full">
-              <button className="w-full py-4 rounded-full bg-brand-primary text-white font-bold text-lg shadow-lg shadow-brand-primary/30">Order Now</button>
             </div>
           </motion.div>
         )}
@@ -302,7 +299,8 @@ function App() {
             initial={{ opacity: 0, x: 80, y: 20 }}
             animate={{ opacity: 1, x: 0, y: [0, -14, 0] }}
             transition={{ opacity: { duration: 1, delay: 1 }, x: { duration: 1, delay: 1 }, y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 } }}
-            className="absolute bottom-0 right-4 md:right-16 z-20 w-40 md:w-64 lg:w-80 select-none pointer-events-none drop-shadow-2xl"
+            className="absolute bottom-0 right-4 md:right-16 z-20 w-28 md:w-52 lg:w-64 select-none pointer-events-none drop-shadow-2xl"
+            loading="lazy"
           />
         </section>
 
@@ -384,7 +382,7 @@ function App() {
                   whileInView={{ opacity: 1, x: 0, y: [0, -10, 0] }}
                   viewport={{ once: true }}
                   transition={{ opacity: { duration: 0.6, delay: 0.3 }, x: { duration: 0.6, delay: 0.3 }, y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 } }}
-                  className="absolute -top-14 -left-14 w-28 md:w-36 z-20 select-none pointer-events-none drop-shadow-xl"
+                  className="absolute -top-12 -left-12 w-20 md:w-28 z-20 select-none pointer-events-none drop-shadow-xl"
                 />
               </motion.div>
 
@@ -473,7 +471,7 @@ function App() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-36 xl:w-44 select-none pointer-events-none drop-shadow-xl"
+                className="hidden lg:block absolute left-4 top-1/2 -translate-y-1/2 w-28 xl:w-36 select-none pointer-events-none drop-shadow-xl"
               />
 
               <h2 className="text-[2.8rem] md:text-[4.5rem] font-heading font-black text-[#001732] leading-[1.05] tracking-tight">
@@ -539,7 +537,7 @@ function App() {
             whileInView={{ opacity: 0.9, x: 0, y: [0, -12, 0] }}
             viewport={{ once: true }}
             transition={{ opacity: { duration: 0.8 }, x: { duration: 0.8 }, y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } }}
-            className="absolute right-0 bottom-0 w-36 md:w-52 select-none pointer-events-none drop-shadow-xl z-10"
+            className="absolute right-0 bottom-0 w-24 md:w-36 select-none pointer-events-none drop-shadow-xl z-10"
           />
           {/* Mascot 04 — floating left */}
           <motion.img
@@ -549,7 +547,7 @@ function App() {
             whileInView={{ opacity: 0.9, x: 0, y: [0, -12, 0] }}
             viewport={{ once: true }}
             transition={{ opacity: { duration: 0.8, delay: 0.2 }, x: { duration: 0.8, delay: 0.2 }, y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1 } }}
-            className="absolute left-0 bottom-0 w-36 md:w-52 select-none pointer-events-none drop-shadow-xl z-10"
+            className="absolute left-0 bottom-0 w-24 md:w-36 select-none pointer-events-none drop-shadow-xl z-10"
           />
           <div className="container mx-auto px-6 max-w-7xl relative z-20">
             <motion.div
@@ -671,11 +669,11 @@ function App() {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 border-b border-gray-100 pb-16 mb-10">
             <div className="md:col-span-12 lg:col-span-5 flex flex-col space-y-6 pr-8">
-              <div className="flex items-center gap-3">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-md overflow-hidden bg-white">
-                  <img src="./assets/logo.PNG" alt="Hyle Laban Logo" className="w-full h-full object-cover" />
+              <div className="flex items-center gap-2">
+                <div className="w-24 md:w-32 h-20 md:h-28 flex items-center justify-center">
+                  <img src="./assets/logo.png" alt="Hyle Laban Logo" className="w-full h-full object-contain" />
                 </div>
-                <span className="text-3xl font-heading font-black tracking-tight text-brand-text uppercase mt-1">Hyle Laban</span>
+                <span className="text-3xl font-heading font-black tracking-tight text-brand-text uppercase mt-1 -ml-2">Hyle Laban</span>
               </div>
               <p className="text-brand-text-muted text-lg font-light leading-relaxed mt-4">
                 Pure Sweetness — delivering rich, creamy, soulful laban desserts inspired by the streets of Dubai, now in every city across India.
