@@ -223,7 +223,7 @@ function App() {
               poster="./assets/hero_laban_dessert_1772818197266.png"
               className="w-full h-full object-cover object-center"
             >
-              <source src="./assets/LABAAN FILM 03.mp4" type="video/mp4" />
+              <source src="https://firebasestorage.googleapis.com/v0/b/unitedareechola.appspot.com/o/LABAAN%20FILM%2003.mp4?alt=media&token=284747bd-0077-4805-be50-ce94d54dec05" type="video/mp4" />
             </video>
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/20" />
           </motion.div>
