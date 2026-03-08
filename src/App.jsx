@@ -2,11 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import { Menu, X, ArrowRight, MapPin, Phone, Instagram, Facebook, Star, PlayCircle, Plus, ChevronDown } from 'lucide-react';
 
-/* ── Animated split-word headline (Apple "grow in" effect) ── */
-function AnimatedHeadline({ text, className }) {
+/* ── Animated split-word headline — skips animation on mobile ── */
+function AnimatedHeadline({ text, className, isMobile }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
   const words = text.split(' ');
+  if (isMobile) {
+    return <span ref={ref} className={className} aria-label={text}>{text}</span>;
+  }
   return (
     <span ref={ref} className={className} aria-label={text}>
       {words.map((word, wi) => (
@@ -25,13 +28,16 @@ function AnimatedHeadline({ text, className }) {
   );
 }
 
-/* ── Magnetic hover wrapper ── */
+/* ── Magnetic hover — no-op on touch devices ── */
 function Magnetic({ children, strength = 0.35 }) {
+  const isTouch = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
   const ref = useRef(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const spring = { stiffness: 200, damping: 20 };
   const x = useSpring(pos.x, spring);
   const y = useSpring(pos.y, spring);
+
+  if (isTouch) return <>{children}</>;
 
   const onMove = (e) => {
     const rect = ref.current.getBoundingClientRect();
@@ -52,17 +58,25 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentStoryImage, setCurrentStoryImage] = useState(0);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' && window.innerWidth <= 768
+  );
 
   const heroRef = useRef(null);
   const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroImgScale = useTransform(heroScroll, [0, 1], [1, 1.18]);
-  const heroOpacity = useTransform(heroScroll, [0, 0.75], [1, 0]);
-  const heroY = useTransform(heroScroll, [0, 1], ['0%', '25%']);
+  // Parallax only on desktop — mobile skips for smooth 60fps
+  const heroImgScaleRaw = useTransform(heroScroll, [0, 1], [1, 1.14]);
+  const heroOpacityRaw = useTransform(heroScroll, [0, 0.75], [1, 0]);
+  const heroYRaw = useTransform(heroScroll, [0, 1], ['0%', '20%']);
+  const heroImgScale = isMobile ? undefined : heroImgScaleRaw;
+  const heroOpacity = isMobile ? undefined : heroOpacityRaw;
+  const heroY = isMobile ? undefined : heroYRaw;
 
   const storyImages = [
-    './assets/product_laban2_1772818245641.png',
-    './assets/hero_laban_dessert_1772818197266.png',
-    './assets/media__1772821209180.png',
+    './assets/shop1.JPG',
+    './assets/shop2.JPG',
+    './assets/shop3.JPG',
+    './assets/PHOTO-2026-03-07-22-41-18.jpg',
   ];
 
   const [currentLocation, setCurrentLocation] = useState(0);
@@ -79,7 +93,9 @@ function App() {
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll);
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
     const imgTimer = setInterval(() => {
       setCurrentStoryImage(p => (p + 1) % storyImages.length);
     }, 4000);
@@ -88,6 +104,7 @@ function App() {
     }, 3500);
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
       clearInterval(imgTimer);
       clearInterval(locTimer);
     };
@@ -104,16 +121,16 @@ function App() {
   };
 
   const products = [
-    { name: 'Ambalyh', price: '₹380', badge: 'NEW ARRIVAL', flavor: 'CHOCOLATE', img: './assets/product_laban2_1772818245641.png' },
-    { name: 'Qashtoota', price: '₹350', badge: 'TRENDING', flavor: 'MANGO', img: './assets/hero_laban_dessert_1772818197266.png' },
-    { name: 'Bambooza', price: '₹380', badge: 'TRENDING', flavor: 'LOTUS', img: './assets/product_laban2_1772818245641.png' },
-    { name: 'Salankatia', price: '₹380', badge: 'NEW ARRIVAL', flavor: 'PISTACHIO', img: './assets/product_laban2_1772818245641.png' },
-    { name: 'Koushiri', price: '₹350', badge: 'TRENDING', flavor: 'PISTACHIO LOTUS', img: './assets/hero_laban_dessert_1772818197266.png' },
-    { name: 'Halibo', price: '₹380', badge: 'TRENDING', flavor: 'NUTELLA', img: './assets/product_laban2_1772818245641.png' },
+    { name: 'Koushri', price: '₹380', badge: 'BESTSELLER', flavor: 'CHOCO PISTA', img: './assets/product1.jpg' },
+    { name: "Lou'a", price: '₹380', badge: 'TRENDING', flavor: 'STRAWBERRY', img: './assets/product2.jpg' },
+    { name: 'Salankatia', price: '₹380', badge: 'NEW ARRIVAL', flavor: 'BISCOFF', img: './assets/product3.jpg' },
+    { name: 'Ambalyh', price: '₹380', badge: 'SIGNATURE', flavor: 'PISTACHIO', img: './assets/product4.jpg' },
+    { name: 'Ambalyh', price: '₹380', badge: 'SIGNATURE', flavor: 'PISTACHIO', img: './assets/product5.jpg' },
+    { name: 'Koushri', price: '₹380', badge: 'BESTSELLER', flavor: 'CHOCO PISTA', img: './assets/product6.jpg' },
   ];
 
-  /* marquee items */
-  const marqueeItems = ['Chocolate', 'Mango', 'Lotus', 'Pistachio', 'Nutella', 'Saffron', 'Rose'];
+  /* marquee items — aligned with real product flavors */
+  const marqueeItems = ['Ambalyh', 'Koushri', 'Lou\'a', 'Salankatia', 'Pistachio', 'Chocolate', 'Pure Sweetness'];
 
   return (
     <div className="font-sans text-brand-text bg-brand-bg min-h-screen selection:bg-brand-primary selection:text-white overflow-x-hidden">
@@ -125,10 +142,12 @@ function App() {
             <motion.div
               whileHover={{ scale: 1.08 }}
               transition={{ type: 'spring', stiffness: 300 }}
-              className={`w-11 h-11 rounded-xl flex items-center justify-center font-heading font-black text-xl shadow-md transition-colors duration-300 ${isScrolled ? 'bg-brand-primary text-white' : 'bg-white/20 text-white backdrop-blur-md border border-white/20'}`}
-            >HL</motion.div>
+              className={`w-14 h-14 rounded-full flex items-center justify-center shadow-md transition-colors duration-300 overflow-hidden ${isScrolled ? 'bg-white' : 'bg-white/20 backdrop-blur-md border border-white/20'}`}
+            >
+              <img src="./assets/logo.PNG" alt="Hyle Laban Logo" className="w-full h-full object-cover" />
+            </motion.div>
             <span className={`text-2xl font-heading font-black tracking-tight uppercase transition-colors duration-300 ${isScrolled ? 'text-brand-text' : 'text-white'}`}>
-              Highly Laban
+              Hyle Laban
             </span>
           </div>
 
@@ -196,11 +215,16 @@ function App() {
             style={{ scale: heroImgScale, y: heroY }}
             className="absolute inset-0 z-0 w-full h-full origin-center"
           >
-            <img
-              src="./assets/hero_laban_dessert_1772818197266.png"
-              alt="Highly Laban"
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="./assets/hero_laban_dessert_1772818197266.png"
               className="w-full h-full object-cover object-center"
-            />
+            >
+              <source src="./assets/LABAAN FILM 03.mp4" type="video/mp4" />
+            </video>
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/20" />
           </motion.div>
 
@@ -220,12 +244,12 @@ function App() {
               <span className="text-xs font-bold uppercase tracking-[0.25em] text-white">The Viral Sensation</span>
             </motion.div>
 
-            {/* Giant headline — split word animation */}
             <h1 className="text-[4rem] sm:text-[6vw] lg:text-[7rem] font-heading font-black tracking-tight leading-[0.95] text-white mb-8 drop-shadow-2xl">
-              <AnimatedHeadline text="Taste the True" className="block" />
+              <AnimatedHeadline text="Taste the True" className="block" isMobile={isMobile} />
               <AnimatedHeadline
                 text="Essence of Laban."
                 className="block text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-sky-300 to-blue-400"
+                isMobile={isMobile}
               />
             </h1>
 
@@ -235,7 +259,7 @@ function App() {
               transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="text-white/70 text-lg sm:text-xl font-light mb-14 max-w-2xl mx-auto leading-relaxed"
             >
-              Elevating traditional Egyptian desserts into an artistic culinary experience. Discover the rich, creamy texture everyone is talking about.
+              Bringing the richness of authentic laban desserts from Dubai to every city in India. Rich, creamy, soulful — Pure Sweetness.
             </motion.p>
 
             <motion.div
@@ -271,6 +295,16 @@ function App() {
               className="w-px h-14 bg-gradient-to-b from-white/60 to-transparent origin-top"
             />
           </motion.div>
+
+          {/* Floating mascot — hero bottom-right */}
+          <motion.img
+            src="./assets/Mascot.png"
+            alt="Hyle Laban Mascot"
+            initial={{ opacity: 0, x: 80, y: 20 }}
+            animate={{ opacity: 1, x: 0, y: [0, -14, 0] }}
+            transition={{ opacity: { duration: 1, delay: 1 }, x: { duration: 1, delay: 1 }, y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 } }}
+            className="absolute bottom-0 right-4 md:right-16 z-20 w-40 md:w-64 lg:w-80 select-none pointer-events-none drop-shadow-2xl"
+          />
         </section>
 
         {/* ── Marquee flavor ticker ─────────────────────────────── */}
@@ -342,6 +376,17 @@ function App() {
                   <p className="text-3xl font-black font-heading text-brand-primary leading-none">30+</p>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Locations</p>
                 </motion.div>
+
+                {/* Story mascot */}
+                <motion.img
+                  src="./assets/Mascot 01.png"
+                  alt="Mascot"
+                  initial={{ opacity: 0, x: -40 }}
+                  whileInView={{ opacity: 1, x: 0, y: [0, -10, 0] }}
+                  viewport={{ once: true }}
+                  transition={{ opacity: { duration: 0.8, delay: 0.3 }, x: { duration: 0.8, delay: 0.3 }, y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 } }}
+                  className="absolute -top-14 -left-14 w-28 md:w-36 z-20 select-none pointer-events-none drop-shadow-xl"
+                />
               </motion.div>
 
               {/* Text */}
@@ -356,12 +401,56 @@ function App() {
 
                 <div className="space-y-6 text-[#4a5568] text-[1.05rem] leading-[1.85] font-light">
                   {[
-                    'Our journey began with a simple passion: to recreate the authentic, nostalgic flavors of traditional Egyptian desserts while elevating them with a modern twist. Over the years, we have mastered the art of balancing rich, creamy textures to craft desserts that feel both comforting and luxurious.',
-                    'Every bowl at Highly Laban is a testament to our dedication. We meticulously source premium ingredients—from the freshest milk for our signature laban base to the finest global nuts for that perfect, irresistible crunch. Our artisans spend hours perfecting small batches, ensuring exceptional quality in every single bite.',
-                    'Today, we continue to innovate by introducing new flavors like pistachio lotus and rich chocolate, but our core philosophy remains unchanged. We don\'t just serve desserts; we serve an experience crafted with love and a commitment to absolute perfection.',
+                    '"Why should something this special be experienced only abroad?" — That question sparked Hyle Laban. We set out to bring the richness of authentic laban desserts to India, not as a foreign concept, but as a familiar, accessible, everyday joy.',
+                    'Our goal is to become the most loved laban-based dessert brand in the country, known for quality, warmth, and an unforgettable taste that connects families, friends, and communities across Kerala and beyond.',
+                    '"If a taste can make one person travel across countries to experience it, we will bring that taste to every city in India." That is our promise — from our kitchen to your heart.',
                   ].map((para, i) => (
                     <motion.p key={i} variants={fadeUp}>{para}</motion.p>
                   ))}
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Mission & Vision Text Blocks */}
+            <motion.div
+              initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-40px' }} variants={stagger}
+              className="mt-24 lg:mt-32 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16"
+            >
+              {/* Vision */}
+              <motion.div variants={fadeUp} className="bg-white rounded-[40px] p-10 lg:p-14 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)] border border-gray-100/60 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-110" />
+                <h3 className="text-3xl font-heading font-black text-[#001732] mb-6 relative z-10 flex items-center gap-4">
+                  <span className="w-12 h-1 bg-brand-primary rounded-full" />
+                  Vision
+                </h3>
+                <div className="space-y-4 text-[#4a5568] text-base leading-relaxed font-light relative z-10">
+                  <p>Our vision was shaped by a simple question: <br /><strong className="text-brand-primary font-medium">"Why should something this special be experienced only abroad?"</strong></p>
+                  <p>We want to bring the richness of authentic laban desserts to India, not as a foreign concept, but as a familiar, accessible, everyday joy. Our goal is to become the most loved laban-based dessert brand in the country, known for quality, warmth, and an unforgettable taste that connects families, friends, and communities.</p>
+                  <p>We aspire to build spaces where people feel the same excitement our founder felt in that moment when culture, flavor, and curiosity meet.</p>
+                  <p>By expanding through passionate franchise partners, we aim to create a national presence that celebrates Middle Eastern indulgence, reimagined for India.</p>
+                </div>
+              </motion.div>
+
+              {/* Mission */}
+              <motion.div variants={fadeUp} className="bg-[#001732] text-white rounded-[40px] p-10 lg:p-14 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/20 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-110" />
+                <h3 className="text-3xl font-heading font-black mb-6 relative z-10 flex items-center gap-4">
+                  <span className="w-12 h-1 bg-brand-primary rounded-full" />
+                  Mission
+                </h3>
+                <div className="space-y-4 text-white/80 text-base leading-relaxed font-light relative z-10">
+                  <p>Our mission began with a promise: <br /><strong className="text-white font-medium">"If a taste can make one person travel across countries to experience it, we will bring that taste to every city in India."</strong></p>
+                  <p>Hyle Laban's mission is to deliver rich, creamy, soulful desserts while honoring their cultural roots. We blend traditional preparation methods with modern flavors, creating a dessert experience that feels both familiar and unforgettable.</p>
+                  <p className="font-medium text-white pt-2">We are committed to:</p>
+                  <ul className="list-none space-y-2 mt-2">
+                    {['Using high-quality ingredients, just as the originals do', 'Training every kitchen to maintain authentic preparation methods', 'Designing each outlet to feel warm, inviting, and culturally rooted', 'Supporting franchise partners to build success stories with us'].map((item, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="text-brand-primary mt-1">✦</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="pt-4 border-t border-white/10 mt-4"><strong className="text-white">Our purpose is simple:</strong><br />To inspire India's dessert lovers with a taste that carries a story, from Dubai to here, from our kitchen to your heart.</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -375,11 +464,21 @@ function App() {
             {/* Section header */}
             <motion.div
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }} variants={stagger}
-              className="text-center mb-20"
+              className="text-center mb-20 relative"
             >
-              <motion.p variants={fadeUp} className="text-brand-primary uppercase tracking-[0.25em] text-xs font-bold mb-4">Our Signature Flavors</motion.p>
+              {/* Decorative mascot left of heading */}
+              <motion.img
+                src="./assets/Mascot 02.png"
+                alt="Mascot"
+                initial={{ opacity: 0, x: -60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-36 xl:w-44 select-none pointer-events-none drop-shadow-xl"
+              />
+
               <h2 className="text-[2.8rem] md:text-[4.5rem] font-heading font-black text-[#001732] leading-[1.05] tracking-tight">
-                <AnimatedHeadline text="Explore the Menu" className="" />
+                <AnimatedHeadline text="Explore the Menu" className="" isMobile={isMobile} />
               </h2>
             </motion.div>
 
@@ -395,16 +494,16 @@ function App() {
                   className="bg-white rounded-[44px] p-6 lg:p-8 flex flex-col shadow-[0_8px_40px_-12px_rgba(0,0,0,0.06)] hover:shadow-[0_24px_60px_-12px_rgba(0,0,0,0.12)] transition-shadow duration-500 relative group"
                 >
                   {/* Image */}
-                  <div className="h-[240px] flex items-center justify-center mb-6 relative w-full pt-4 overflow-hidden">
+                  <div className="h-[320px] md:h-[380px] flex items-center justify-center mb-6 relative w-full pt-4">
                     <motion.img
                       src={product.img}
                       alt={product.name}
-                      whileHover={{ scale: 1.08, rotate: 2 }}
+                      whileHover={{ scale: 1.05, rotate: 1 }}
                       transition={{ duration: 0.5, ease: 'easeOut' }}
-                      className="w-[85%] h-full object-contain filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.15)] rounded-2xl relative z-10"
+                      className="w-full h-full object-cover rounded-3xl relative z-10"
                     />
                     {/* Badge */}
-                    <div className="absolute top-0 right-0 z-20">
+                    <div className="absolute top-4 right-4 z-20">
                       <span className="bg-white shadow-sm text-brand-primary px-4 py-1.5 rounded-xl text-[0.6rem] font-bold uppercase tracking-widest border border-gray-100/50 block">
                         {product.badge}
                       </span>
@@ -418,15 +517,12 @@ function App() {
                     </span>
                   </div>
 
-                  {/* Name & price */}
+                  {/* Name */}
                   <div className="flex justify-between items-center mb-1 px-2">
                     <h4 className="text-[1.5rem] font-black font-heading text-[#001732]">{product.name}</h4>
                     <motion.div whileHover={{ rotate: 180 }} transition={{ duration: 0.3 }}>
                       <ChevronDown className="text-gray-400" size={22} strokeWidth={2.5} />
                     </motion.div>
-                  </div>
-                  <div className="px-2">
-                    <div className="text-[1.8rem] font-black font-heading tracking-tight text-brand-primary">{product.price}</div>
                   </div>
                 </motion.div>
               ))}
@@ -435,8 +531,28 @@ function App() {
         </section>
 
         {/* ── Stats strip ──────────────────────────────────────── */}
-        <section className="py-20 bg-white border-y border-gray-100">
-          <div className="container mx-auto px-6 max-w-7xl">
+        <section className="py-20 bg-white border-y border-gray-100 relative overflow-hidden">
+          {/* Mascot 03 — floating right */}
+          <motion.img
+            src="./assets/Mascot 03.png"
+            alt="Mascot"
+            initial={{ opacity: 0, x: 80 }}
+            whileInView={{ opacity: 0.9, x: 0, y: [0, -12, 0] }}
+            viewport={{ once: true }}
+            transition={{ opacity: { duration: 0.8 }, x: { duration: 0.8 }, y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } }}
+            className="absolute right-0 bottom-0 w-36 md:w-52 select-none pointer-events-none drop-shadow-xl z-10"
+          />
+          {/* Mascot 04 — floating left */}
+          <motion.img
+            src="./assets/Mascot 04.png"
+            alt="Mascot"
+            initial={{ opacity: 0, x: -80 }}
+            whileInView={{ opacity: 0.9, x: 0, y: [0, -12, 0] }}
+            viewport={{ once: true }}
+            transition={{ opacity: { duration: 0.8, delay: 0.2 }, x: { duration: 0.8, delay: 0.2 }, y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1 } }}
+            className="absolute left-0 bottom-0 w-36 md:w-52 select-none pointer-events-none drop-shadow-xl z-10"
+          />
+          <div className="container mx-auto px-6 max-w-7xl relative z-20">
             <motion.div
               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
               className="grid grid-cols-2 md:grid-cols-4 gap-10 text-center"
@@ -470,14 +586,14 @@ function App() {
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="bg-[#001732] text-white rounded-[48px] p-10 md:p-16 relative overflow-hidden flex flex-col items-center text-center"
             >
-              {/* Glow orbs */}
-              <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/30 rounded-full blur-[100px] pointer-events-none" />
-              <motion.div animate={{ scale: [1.1, 1, 1.1], opacity: [0.2, 0.35, 0.2] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }} className="absolute bottom-0 left-0 w-72 h-72 bg-sky-400/20 rounded-full blur-[80px] pointer-events-none" />
+              {/* Glow orbs — static on mobile to save GPU */}
+              <motion.div animate={isMobile ? {} : { scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/30 rounded-full blur-[100px] pointer-events-none" style={{ opacity: 0.35 }} />
+              <motion.div animate={isMobile ? {} : { scale: [1.1, 1, 1.1], opacity: [0.2, 0.35, 0.2] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }} className="absolute bottom-0 left-0 w-72 h-72 bg-sky-400/20 rounded-full blur-[80px] pointer-events-none" style={{ opacity: 0.25 }} />
 
               {/* Header */}
               <div className="relative z-10 max-w-3xl mx-auto mb-12">
                 <h2 className="text-[2.5rem] md:text-[4rem] font-heading font-black mb-4 leading-tight">
-                  <AnimatedHeadline text="Find a location near you." className="" />
+                  <AnimatedHeadline text="Find a location near you." className="" isMobile={isMobile} />
                 </h2>
                 <p className="text-gray-400 text-lg font-light">Experience the magic in person across Kerala.</p>
               </div>
@@ -557,14 +673,16 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 border-b border-gray-100 pb-16 mb-10">
             <div className="md:col-span-12 lg:col-span-5 flex flex-col space-y-6 pr-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-brand-primary flex items-center justify-center text-white font-heading font-black text-2xl shadow-md">HL</div>
-                <span className="text-3xl font-heading font-black tracking-tight text-brand-text uppercase mt-1">Highly Laban</span>
+                <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-md overflow-hidden bg-white">
+                  <img src="./assets/logo.PNG" alt="Hyle Laban Logo" className="w-full h-full object-cover" />
+                </div>
+                <span className="text-3xl font-heading font-black tracking-tight text-brand-text uppercase mt-1">Hyle Laban</span>
               </div>
               <p className="text-brand-text-muted text-lg font-light leading-relaxed mt-4">
-                The authentic taste of Egyptian Laban, spreading sweetness across India with every bite.
+                Pure Sweetness — delivering rich, creamy, soulful laban desserts inspired by the streets of Dubai, now in every city across India.
               </p>
               <div className="flex space-x-3 pt-4">
-                <a href="#" className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-brand-text border border-gray-100 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all duration-300"><Instagram size={20} /></a>
+                <a href="https://www.instagram.com/hyle_laban" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-brand-text border border-gray-100 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all duration-300"><Instagram size={20} /></a>
                 <a href="#" className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-brand-text border border-gray-100 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all duration-300"><Facebook size={20} /></a>
               </div>
             </div>
@@ -592,14 +710,23 @@ function App() {
                   <div className="w-10 h-10 rounded-full bg-blue-50 flex flex-shrink-0 items-center justify-center mr-4">
                     <Phone size={18} className="text-brand-primary" />
                   </div>
-                  <span>+91 90000 00000</span>
+                  <div>
+                    <div>+91 99402 80906</div>
+                    <div>+91 99479 76573</div>
+                  </div>
+                </li>
+                <li className="flex items-center">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 flex flex-shrink-0 items-center justify-center mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-primary"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+                  </div>
+                  <a href="mailto:hylelaban@gmail.com" className="hover:text-brand-primary transition-colors">hylelaban@gmail.com</a>
                 </li>
               </ul>
             </div>
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center text-brand-text-muted font-medium text-sm">
-            <p>&copy; {new Date().getFullYear()} Highly Laban. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Hyle Laban. All rights reserved.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-brand-primary transition-colors">Privacy Policy</a>
               <a href="#" className="hover:text-brand-primary transition-colors">Terms of Service</a>
