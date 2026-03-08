@@ -76,7 +76,6 @@ function App() {
     './assets/shop1.JPG',
     './assets/shop2.JPG',
     './assets/shop3.JPG',
-    './assets/PHOTO-2026-03-07-22-41-18.jpg',
   ];
 
   const [currentLocation, setCurrentLocation] = useState(0);
@@ -220,7 +219,7 @@ function App() {
               loop
               muted
               playsInline
-              poster="./assets/hero_laban_dessert_1772818197266.png"
+              poster="./assets/poster.png"
               className="w-full h-full object-cover object-center"
             >
               <source src="https://firebasestorage.googleapis.com/v0/b/unitedareechola.appspot.com/o/LABAAN%20FILM%2003.mp4?alt=media&token=284747bd-0077-4805-be50-ce94d54dec05" type="video/mp4" />
@@ -259,7 +258,7 @@ function App() {
               transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="text-white/70 text-lg sm:text-xl font-light mb-14 max-w-2xl mx-auto leading-relaxed"
             >
-              Bringing the richness of authentic laban desserts from Dubai to every city in India. Rich, creamy, soulful — Pure Sweetness.
+
             </motion.p>
 
             <motion.div
@@ -345,7 +344,7 @@ function App() {
                       initial={{ opacity: 0, scale: 1.06 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.97 }}
-                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                       className="absolute inset-0 w-full h-full object-cover"
                       alt="Our Story"
                     />
@@ -370,7 +369,7 @@ function App() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ delay: 0.4, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute -bottom-6 -right-6 bg-white rounded-2xl px-6 py-4 shadow-xl border border-gray-100/80 z-20"
                 >
                   <p className="text-3xl font-black font-heading text-brand-primary leading-none">30+</p>
@@ -384,7 +383,7 @@ function App() {
                   initial={{ opacity: 0, x: -40 }}
                   whileInView={{ opacity: 1, x: 0, y: [0, -10, 0] }}
                   viewport={{ once: true }}
-                  transition={{ opacity: { duration: 0.8, delay: 0.3 }, x: { duration: 0.8, delay: 0.3 }, y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 } }}
+                  transition={{ opacity: { duration: 0.6, delay: 0.3 }, x: { duration: 0.6, delay: 0.3 }, y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 } }}
                   className="absolute -top-14 -left-14 w-28 md:w-36 z-20 select-none pointer-events-none drop-shadow-xl"
                 />
               </motion.div>
