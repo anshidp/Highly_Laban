@@ -78,17 +78,26 @@ function App() {
     './assets/shop3.JPG',
   ];
 
-  const [currentLocation, setCurrentLocation] = useState(0);
-
-  const locations = [
-    { name: 'Kottakkal', desc: 'Main Branch', phone: '+91 86061 00088', area: 'Malappuram' },
-    { name: 'HiLITE Mall, Calicut', desc: 'Shopping Center', phone: '+91 97442 82829', area: 'Kozhikode' },
-    { name: 'Perinthalmanna', desc: 'Town Square', phone: '+91 97442 82864', area: 'Malappuram' },
-    { name: 'Tirur', desc: 'High Street', phone: '+91 90000 11111', area: 'Malappuram' },
-    { name: 'Manjeri', desc: 'City Center', phone: '+91 90000 22222', area: 'Malappuram' },
-    { name: 'Calicut Beach Road', desc: 'Beachside Outlet', phone: '+91 90000 33333', area: 'Kozhikode' },
+  // Map locations — starred = running shops, not starred = upcoming
+  const mapLocations = [
+    { name: 'OMR', sub: 'Starting Point', starred: true, x: 18, y: 82 },
+    { name: 'Velachery', starred: true, x: 47, y: 82 },
+    { name: 'ECR', starred: true, x: 78, y: 82 },
+    { name: 'Navallur', starred: false, x: 18, y: 66 },
+    { name: 'Adyar', starred: false, x: 47, y: 66 },
+    { name: 'Pallavaram', starred: false, x: 25, y: 55 },
+    { name: 'Guindy', starred: false, x: 55, y: 55 },
+    { name: 'KNK Road', starred: false, x: 75, y: 48 },
+    { name: 'Anna Nagar', starred: false, x: 30, y: 44 },
+    { name: 'Mount Road', starred: false, x: 55, y: 44 },
+    { name: 'Mannady', starred: false, x: 78, y: 38 },
+    { name: 'Porur', starred: false, x: 22, y: 36 },
+    { name: 'Egmore', starred: true, x: 52, y: 30 },
+    { name: 'Royapuram', starred: false, x: 72, y: 28 },
+    { name: 'Poonamallee', starred: false, x: 32, y: 26 },
+    { name: 'Pondy Bazaar', starred: false, x: 54, y: 18 },
+    { name: 'Tiruvottiyur', starred: false, x: 20, y: 22 },
   ];
-  const VISIBLE = 3;
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50);
@@ -98,16 +107,12 @@ function App() {
     const imgTimer = setInterval(() => {
       setCurrentStoryImage(p => (p + 1) % storyImages.length);
     }, 4000);
-    const locTimer = setInterval(() => {
-      setCurrentLocation(p => (p + 1) % (locations.length - VISIBLE + 1));
-    }, 3500);
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
       clearInterval(imgTimer);
-      clearInterval(locTimer);
     };
-  }, [storyImages.length, locations.length]);
+  }, [storyImages.length]);
 
   /* Shared variants */
   const fadeUp = {
@@ -573,93 +578,215 @@ function App() {
           </div>
         </section>
 
-        {/* ── Locations ─────────────────────────────────────────── */}
-        <section id="locations" className="py-32 bg-gray-50 relative overflow-hidden">
-          <div className="container mx-auto px-6 max-w-7xl relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-[#001732] text-white rounded-[48px] p-10 md:p-16 relative overflow-hidden flex flex-col items-center text-center"
-            >
-              {/* Glow orbs — static on mobile to save GPU */}
-              <motion.div animate={isMobile ? {} : { scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/30 rounded-full blur-[100px] pointer-events-none" style={{ opacity: 0.35 }} />
-              <motion.div animate={isMobile ? {} : { scale: [1.1, 1, 1.1], opacity: [0.2, 0.35, 0.2] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }} className="absolute bottom-0 left-0 w-72 h-72 bg-sky-400/20 rounded-full blur-[80px] pointer-events-none" style={{ opacity: 0.25 }} />
+        {/* ── Locations — Journey Map ──────────────────────────── */}
+        <section id="locations" className="relative overflow-hidden bg-white" style={{ paddingTop: '6rem', paddingBottom: '0' }}>
 
-              {/* Header */}
-              <div className="relative z-10 max-w-3xl mx-auto mb-12">
-                <h2 className="text-[2.5rem] md:text-[4rem] font-heading font-black mb-4 leading-tight">
-                  <AnimatedHeadline text="Find a location near you." className="" isMobile={isMobile} />
-                </h2>
-                <p className="text-gray-400 text-lg font-light">Experience the magic in person across Kerala.</p>
+          {/* Section header */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="container mx-auto px-6 max-w-7xl text-center mb-12 relative z-10"
+          >
+            <p className="text-brand-primary uppercase tracking-[0.25em] text-xs font-bold flex items-center justify-center gap-3 mb-4">
+              <span className="w-8 h-px bg-brand-primary" />
+              Our Journey
+              <span className="w-8 h-px bg-brand-primary" />
+            </p>
+            <h2 className="text-[2.8rem] md:text-[4.5rem] font-heading font-black text-[#001732] leading-[1.05] tracking-tight mb-4">
+              <AnimatedHeadline text="Hyle Laban Journey Across Chennai" className="" isMobile={isMobile} />
+            </h2>
+            <p className="text-gray-500 text-lg font-light max-w-xl mx-auto mb-8">From OMR to the heart of the city — taste us near you.</p>
+
+            {/* Legend */}
+            <div className="flex items-center justify-center gap-8 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center shadow-md">
+                  <Star size={14} fill="white" className="text-white" />
+                </span>
+                <span className="text-sm font-bold text-[#001732]">Running Shop</span>
               </div>
+              <div className="flex items-center gap-2">
+                <span className="w-7 h-7 rounded-full bg-white border-2 border-[#4295b9] flex items-center justify-center shadow-sm">
+                  <MapPin size={13} className="text-[#4295b9]" strokeWidth={2.5} />
+                </span>
+                <span className="text-sm font-bold text-gray-400">Upcoming Shop</span>
+              </div>
+            </div>
+          </motion.div>
 
-              {/* Carousel */}
-              <div className="relative w-full z-10">
-                <div className="overflow-hidden">
-                  <motion.div
-                    animate={{ x: `-${(currentLocation / VISIBLE) * 100}%` }}
-                    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex gap-6"
-                    style={{ width: `${(locations.length / VISIBLE) * 100}%` }}
-                  >
-                    {locations.map((loc, i) => (
-                      <motion.div
-                        key={i}
-                        whileHover={{ scale: 1.03, y: -4 }}
-                        className="bg-white/[0.08] backdrop-blur-md rounded-2xl p-7 border border-white/10 hover:bg-white/[0.15] transition-colors text-left flex flex-col flex-1"
-                      >
-                        <div className="flex items-start justify-between mb-4">
-                          <MapPin size={22} className="text-brand-primary" strokeWidth={2} />
-                          <span className="text-[0.6rem] font-bold uppercase tracking-widest text-brand-primary/80 bg-brand-primary/10 px-3 py-1 rounded-full">{loc.area}</span>
-                        </div>
-                        <h4 className="text-xl font-heading font-bold mb-1 leading-tight">{loc.name}</h4>
-                        <p className="text-gray-400 text-sm mb-6 flex-grow">{loc.desc}</p>
-                        <div className="text-white/70 font-medium flex items-center text-sm">
-                          <Phone size={14} className="mr-2 text-brand-primary" />
-                          {loc.phone}
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
+          {/* Map container */}
+          <div className="relative w-full" style={{ minHeight: '560px', background: 'linear-gradient(180deg,#dff2fb 0%,#b8e3f5 40%,#e8f6fc 100%)' }}>
 
-                {/* Arrow controls */}
-                <div className="flex justify-center items-center gap-4 mt-8">
-                  <button
-                    onClick={() => setCurrentLocation(p => Math.max(0, p - 1))}
-                    aria-label="Previous"
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 transition-colors flex items-center justify-center border border-white/10 disabled:opacity-30"
-                    disabled={currentLocation === 0}
-                  >
-                    <ChevronDown size={18} className="rotate-90 text-white" strokeWidth={2.5} />
-                  </button>
+            {/* Wavy water lines SVG — background atmosphere */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+                <ellipse key={i} cx={100 + i * 140} cy={280 + (i % 3) * 40 - 40} rx={120} ry={55}
+                  fill="none" stroke="#27aae1" strokeWidth="1.2" strokeOpacity="0.18" />
+              ))}
+              {/* City skyline silhouette top */}
+              <path d="M0,140 L60,140 L60,120 L80,120 L80,100 L100,100 L100,80 L120,80 L120,100 L140,100 L140,140 L200,140 L200,110 L220,110 L220,90 L240,90 L240,110 L260,110 L260,140 L340,140 L340,115 L360,115 L360,95 L375,95 L375,75 L390,75 L390,95 L405,95 L405,115 L440,115 L440,140 L520,140 L520,115 L540,115 L540,95 L560,95 L560,115 L580,115 L580,140 L650,140 L650,110 L670,110 L670,90 L690,90 L690,70 L710,70 L710,90 L730,90 L730,110 L760,110 L760,140 L840,140 L840,115 L860,115 L860,95 L880,95 L880,115 L920,115 L920,140 L1000,140 L1000,115 L1020,115 L1020,95 L1040,95 L1040,115 L1080,115 L1080,140 L1200,140"
+                fill="#c8e8f5" stroke="#27aae1" strokeWidth="1" strokeOpacity="0.3" fillOpacity="0.4" />
+            </svg>
 
-                  {/* Dots */}
-                  <div className="flex gap-2">
-                    {Array.from({ length: locations.length - VISIBLE + 1 }).map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentLocation(idx)}
-                        aria-label={`Go to location ${idx + 1}`}
-                        className={`h-2 rounded-full transition-all duration-300 outline-none ${currentLocation === idx ? 'w-8 bg-brand-primary shadow-[0_0_10px_rgba(39,170,225,0.6)]' : 'w-2 bg-white/30 hover:bg-white/60'}`}
-                      />
-                    ))}
+            {/* Dashed journey paths */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <style>{`
+                  .dash-path { stroke-dasharray: 2.5 2; animation: dashMove 6s linear infinite; }
+                  @keyframes dashMove { to { stroke-dashoffset: -20; } }
+                `}</style>
+              </defs>
+              {/* vertical spine */}
+              <path className="dash-path" d="M47,82 Q47,74 47,66 Q47,58 55,55 Q63,52 55,44 Q52,36 52,30 Q52,24 54,18" fill="none" stroke="#27aae1" strokeWidth="0.4" strokeOpacity="0.55" />
+              {/* horizontal bottom */}
+              <path className="dash-path" d="M18,82 Q32,78 47,82 Q62,86 78,82" fill="none" stroke="#27aae1" strokeWidth="0.4" strokeOpacity="0.55" />
+              {/* left branch */}
+              <path className="dash-path" d="M18,82 Q18,74 18,66 Q18,60 25,55 Q30,50 30,44 Q26,40 22,36 Q21,29 20,22" fill="none" stroke="#27aae1" strokeWidth="0.35" strokeOpacity="0.45" />
+              {/* right branch */}
+              <path className="dash-path" d="M78,82 Q76,65 75,48 Q74,43 78,38 Q75,33 72,28" fill="none" stroke="#27aae1" strokeWidth="0.35" strokeOpacity="0.45" />
+              {/* cross links */}
+              <path className="dash-path" d="M47,66 Q46,66 25,55" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M55,55 Q65,51 75,48" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M30,44 Q42,40 55,44" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M32,26 Q43,22 54,18" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M20,22 Q32,20 32,26" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M55,30 Q63,29 72,28" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
+            </svg>
+
+            {/* Location pins — absolutely positioned using % coordinates */}
+            <div className="absolute inset-0">
+              {mapLocations.map((loc, i) => (
+                <motion.div
+                  key={loc.name}
+                  initial={{ opacity: 0, scale: 0, y: 10 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ scale: 1.15, zIndex: 50 }}
+                  className="absolute flex flex-col items-center group cursor-pointer"
+                  style={{ left: `${loc.x}%`, top: `${loc.y}%`, transform: 'translate(-50%,-100%)' }}
+                >
+                  {/* Label above pin */}
+                  <div className={`mb-1 px-2 py-0.5 rounded-full text-[0.6rem] font-black uppercase tracking-wide whitespace-nowrap shadow-sm
+                    ${loc.starred ? 'bg-[#001732] text-white' : 'bg-white text-[#001732] border border-[#4295b9]/40'}`}>
+                    {loc.name}
+                    {loc.sub && <span className="ml-1 font-normal text-[0.5rem] opacity-70">{loc.sub}</span>}
                   </div>
+                  {/* Pin icon */}
+                  {loc.starred ? (
+                    <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center shadow-[0_4px_16px_rgba(39,170,225,0.55)] border-2 border-white group-hover:shadow-[0_6px_24px_rgba(39,170,225,0.7)] transition-shadow">
+                      <Star size={14} fill="white" className="text-white" strokeWidth={1} />
+                    </div>
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-[#4295b9]/60 group-hover:border-brand-primary transition-colors">
+                      <MapPin size={12} className="text-[#4295b9]" strokeWidth={2.5} />
+                    </div>
+                  )}
+                  {/* Drop needle */}
+                  <div className={`w-px h-3 ${loc.starred ? 'bg-brand-primary' : 'bg-[#4295b9]/50'}`} />
+                </motion.div>
+              ))}
+            </div>
 
-                  <button
-                    onClick={() => setCurrentLocation(p => Math.min(locations.length - VISIBLE, p + 1))}
-                    aria-label="Next"
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 transition-colors flex items-center justify-center border border-white/10 disabled:opacity-30"
-                    disabled={currentLocation === locations.length - VISIBLE}
-                  >
-                    <ChevronDown size={18} className="-rotate-90 text-white" strokeWidth={2.5} />
-                  </button>
-                </div>
+            {/* Mascot walking — bottom left */}
+            <motion.img
+              src="./assets/Mascot.png"
+              alt="Hyle Laban Mascot"
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0, y: [0, -10, 0] }}
+              viewport={{ once: true }}
+              transition={{ opacity: { duration: 0.8, delay: 0.3 }, x: { duration: 0.8, delay: 0.3 }, y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 1.2 } }}
+              className="absolute bottom-0 left-4 md:left-12 w-28 md:w-44 select-none pointer-events-none drop-shadow-2xl z-20"
+            />
+
+            {/* Brand watermark right */}
+            <div className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 z-10 opacity-90">
+              <img src="./assets/logo.png" alt="Hyle Laban" className="w-14 md:w-20 drop-shadow" />
+              <div className="text-center">
+                <p className="font-heading font-black text-[#001732] text-sm md:text-base leading-tight">Hyle Laban</p>
+                <p className="font-bold text-[#27aae1] text-[0.6rem] md:text-xs uppercase tracking-widest">Journey Across Chennai</p>
               </div>
+            </div>
 
-            </motion.div>
+            {/* Bottom wave */}
+            <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0,30 Q100,0 200,30 Q300,60 400,30 Q500,0 600,30 Q700,60 800,30 Q900,0 1000,30 Q1100,60 1200,30 L1200,60 L0,60 Z" fill="white" />
+            </svg>
+          </div>
+
+          {/* Stats row below map */}
+          <div className="bg-white pt-10 pb-0">
+            <div className="container mx-auto px-6 max-w-5xl">
+              <motion.div
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
+                className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center border border-gray-100 rounded-3xl p-8 shadow-sm"
+              >
+                {[
+                  { val: `${mapLocations.filter(l => l.starred).length}`, label: 'Running Shops' },
+                  { val: `${mapLocations.filter(l => !l.starred).length + 6}`, label: 'Opening Soon' },
+                  { val: `${mapLocations.length + 6}+`, label: 'Locations' },
+                  { val: 'India', label: 'Nationwide' },
+                ].map((stat, i) => (
+                  <motion.div key={i} variants={fadeUp} className="flex flex-col items-center">
+                    <span className="text-[2.8rem] font-black font-heading text-brand-primary leading-none">{stat.val}</span>
+                    <span className="text-sm text-gray-400 font-bold uppercase tracking-wider mt-2">{stat.label}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Expanding Soon — upcoming cities across India */}
+          <div className="bg-white py-14">
+            <div className="container mx-auto px-6 max-w-5xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="text-center mb-10"
+              >
+                <p className="text-brand-primary uppercase tracking-[0.25em] text-xs font-bold flex items-center justify-center gap-3 mb-3">
+                  <span className="w-8 h-px bg-brand-primary" />
+                  Coming Soon
+                  <span className="w-8 h-px bg-brand-primary" />
+                </p>
+                <h3 className="text-2xl md:text-3xl font-heading font-black text-[#001732]">Expanding Across India</h3>
+                <p className="text-gray-400 text-sm mt-2">These cities are opening soon — stay tuned!</p>
+              </motion.div>
+
+              <motion.div
+                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
+                className="flex flex-wrap justify-center gap-4"
+              >
+                {[
+                  { city: 'Salem', state: 'Tamil Nadu' },
+                  { city: 'Madurai', state: 'Tamil Nadu' },
+                  { city: 'Hyderabad', state: 'Telangana' },
+                  { city: 'Mumbai', state: 'Maharashtra' },
+                  { city: 'Pune', state: 'Maharashtra' },
+                  { city: 'Delhi', state: 'NCR' },
+                ].map((loc, i) => (
+                  <motion.div
+                    key={loc.city}
+                    variants={fadeUp}
+                    whileHover={{ y: -4, scale: 1.04 }}
+                    className="flex items-center gap-3 bg-gray-50 border border-[#4295b9]/25 rounded-2xl px-6 py-4 shadow-sm hover:shadow-md hover:border-brand-primary/40 transition-all duration-300 cursor-default"
+                  >
+                    <span className="w-8 h-8 rounded-full bg-[#eaf6fc] border border-[#4295b9]/30 flex items-center justify-center flex-shrink-0">
+                      <MapPin size={14} className="text-[#4295b9]" strokeWidth={2.5} />
+                    </span>
+                    <div className="text-left">
+                      <p className="font-heading font-black text-[#001732] text-base leading-tight">{loc.city}</p>
+                      <p className="text-[0.65rem] text-gray-400 font-bold uppercase tracking-wider">{loc.state}</p>
+                    </div>
+                    <span className="ml-2 bg-amber-50 text-amber-500 border border-amber-200 text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 rounded-full">Soon</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </section>
       </main>
