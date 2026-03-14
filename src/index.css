@@ -1,16 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-primary: #27AAE1;
-  --color-brand-primary-dark: #1E8DBE;
+  --color-brand-primary: #2D8DCD;
+  --color-brand-primary-dark: #1a6fac;
+  --color-brand-primary-light: #5cb3e8;
+  --color-brand-primary-soft: #e0f2fd;
+  --color-brand-primary-mist: #f0faff;
+  --color-brand-cyan: #00c6f7;
+  --color-brand-sky: #38bdf8;
+  --color-brand-navy: #0a2540;
   --color-brand-bg: #ffffff;
-  --color-brand-surface: #f8fafc;
-  --color-brand-surface-2: #e2e8f0;
-  --color-brand-text: #111111;
-  --color-brand-text-muted: #555555;
+  --color-brand-surface: #f0f9ff;
+  --color-brand-surface-2: #bae6fd;
+  --color-brand-surface-3: #062035;
+  --color-brand-text: #0a1628;
+  --color-brand-text-muted: #4b6578;
+  --color-brand-accent1: #f59e0b;
+  /* warm gold */
+  --color-brand-accent2: #10b981;
+  /* mint green */
+  --color-brand-accent3: #f43f5e;
+  /* coral pink */
 
   --font-heading: "Outfit", sans-serif;
   --font-sans: "Inter", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -18,6 +39,7 @@ body {
   color: var(--color-brand-text);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  margin: 0;
 }
 
 h1,
@@ -32,4 +54,9 @@ h6 {
 ::selection {
   background-color: var(--color-brand-primary);
   color: var(--color-brand-bg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

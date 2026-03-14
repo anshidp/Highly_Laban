@@ -137,10 +137,11 @@ function App() {
   const marqueeItems = ['Ambalyh', 'Koushri', 'Lou\'a', 'Salankatia', 'Pistachio', 'Chocolate', 'Pure Sweetness'];
 
   return (
-    <div className="font-sans text-brand-text bg-brand-bg min-h-screen selection:bg-brand-primary selection:text-white overflow-x-hidden">
+    <div className="font-sans text-brand-text bg-brand-bg min-h-screen selection:bg-brand-primary selection:text-white overflow-x-hidden" style={{ background: 'linear-gradient(180deg,#f0faff 0%,#ffffff 100%)' }}>
+
 
       {/* ── Navbar ─────────────────────────────────────────────── */}
-      <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.06)] py-3' : 'bg-transparent py-5'}`}>
+      <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/90 backdrop-blur-xl shadow-[0_2px_24px_rgba(45,141,205,0.22)] py-3 border-b border-[#2D8DCD]/10' : 'bg-transparent py-5'}`}>
         <div className="container mx-auto px-6 max-w-7xl flex justify-between items-center">
           <div className="flex items-center gap-2 z-10">
             <motion.div
@@ -148,7 +149,7 @@ function App() {
               transition={{ type: 'spring', stiffness: 300 }}
               className={`w-20 md:w-28 h-16 md:h-20 flex items-center justify-center transition-colors duration-300 ${isScrolled ? '' : ''}`}
             >
-              <img src="./assets/logo.png" alt="Hyle Laban Logo" className="w-full h-full object-contain" />
+              <img src="./assets/logo.svg" alt="Hyle Laban Logo" className="w-full h-full object-contain" />
             </motion.div>
             <span className={`text-3xl font-heading font-black tracking-tight uppercase transition-colors duration-300 -ml-2 ${isScrolled ? 'text-brand-text' : 'text-white'}`}>
               Hyle Laban
@@ -187,7 +188,7 @@ function App() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-            className="fixed inset-0 z-[60] bg-white flex flex-col p-8"
+            className="fixed inset-0 z-[60] bg-[linear-gradient(180deg,#ffffff_0%,#f4fbff_100%)] flex flex-col p-8"
           >
             <button onClick={() => setIsMobileMenuOpen(false)} className="self-end mb-10"><X size={28} /></button>
             <div className="flex flex-col space-y-6">
@@ -212,6 +213,7 @@ function App() {
         <section ref={heroRef} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden w-full">
 
           {/* Parallax background */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,198,247,0.30),transparent_32%),radial-gradient(ellipse_at_bottom_right,rgba(45,141,205,0.35),transparent_40%),radial-gradient(circle_at_center,rgba(10,37,64,0.15),transparent_65%)] z-[1]" />
           <motion.div
             style={{ scale: heroImgScale, y: heroY }}
             className="absolute inset-0 z-0 w-full h-full origin-center"
@@ -226,7 +228,7 @@ function App() {
             >
               <source src="https://firebasestorage.googleapis.com/v0/b/unitedareechola.appspot.com/o/LABAAN%20FILM%2003.mp4?alt=media&token=284747bd-0077-4805-be50-ce94d54dec05" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/20" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,22,32,0.35)_0%,rgba(13,22,32,0.58)_45%,rgba(0,0,0,0.86)_100%)]" />
           </motion.div>
 
           {/* Hero content fades out on scroll */}
@@ -239,7 +241,7 @@ function App() {
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-flex items-center bg-white/10 backdrop-blur-sm py-2 px-5 rounded-full border border-white/20 mb-10"
+              className="inline-flex items-center bg-white/12 backdrop-blur-md py-2 px-5 rounded-full border border-white/25 shadow-[0_0_30px_rgba(45,141,205,0.18)] mb-10"
             >
               <span className="w-2 h-2 rounded-full bg-brand-primary animate-pulse mr-3" />
               <span className="text-xs font-bold uppercase tracking-[0.25em] text-white">The Viral Sensation</span>
@@ -249,7 +251,7 @@ function App() {
               <AnimatedHeadline text="Taste the True" className="block" isMobile={isMobile} />
               <AnimatedHeadline
                 text="Essence of Laban."
-                className="block text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-sky-300 to-blue-400"
+                className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-[#9cd1f1] to-brand-primary"
                 isMobile={isMobile}
               />
             </h1>
@@ -270,7 +272,7 @@ function App() {
               className="flex flex-col sm:flex-row items-center gap-4"
             >
               <Magnetic>
-                <a href="#products" className="group flex items-center justify-center px-10 py-4 rounded-full bg-brand-primary text-white font-bold tracking-widest uppercase text-sm shadow-[0_0_40px_rgba(39,170,225,0.4)] hover:shadow-[0_0_60px_rgba(39,170,225,0.7)] hover:-translate-y-1 transition-all duration-300">
+                <a href="#products" className="group flex items-center justify-center px-10 py-4 rounded-full bg-brand-primary text-white font-bold tracking-widest uppercase text-sm shadow-[0_0_40px_rgba(45,141,205,0.45)] hover:shadow-[0_0_60px_rgba(45,141,205,0.72)] hover:-translate-y-1 transition-all duration-300">
                   Explore Menu
                   <ArrowRight size={18} className="ml-3 group-hover:translate-x-2 transition-transform" />
                 </a>
@@ -310,27 +312,30 @@ function App() {
         </section>
 
         {/* ── Marquee flavor ticker ─────────────────────────────── */}
-        <div className="bg-brand-primary py-4 overflow-hidden whitespace-nowrap select-none" aria-hidden>
+        <div className="overflow-hidden whitespace-nowrap select-none relative" aria-hidden style={{ background: 'linear-gradient(90deg,#0a2540 0%,#2D8DCD 30%,#00c6f7 60%,#2D8DCD 80%,#0a2540 100%)', padding: '14px 0' }}>
+          <div className="absolute inset-0 opacity-20" style={{ background: 'repeating-linear-gradient(90deg,rgba(255,255,255,0.08) 0,rgba(255,255,255,0.08) 2px,transparent 2px,transparent 24px)' }} />
           <motion.div
             animate={{ x: '-50%' }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
             className="inline-flex gap-0"
           >
             {[...marqueeItems, ...marqueeItems].map((item, i) => (
-              <span key={i} className="text-white text-sm font-bold uppercase tracking-[0.25em] mx-8">
+              <span key={i} className="text-white text-sm font-black uppercase tracking-[0.3em] mx-8 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full" style={{ background: i % 3 === 0 ? '#00c6f7' : i % 3 === 1 ? '#ffffff' : '#5cb3e8' }} />
                 {item}
-                <span className="mx-8 text-white/40">✦</span>
+                <span className="mx-6 text-white/30">◈</span>
               </span>
             ))}
           </motion.div>
         </div>
 
         {/* ── Story Section ─────────────────────────────────────── */}
-        <section id="ourstory" className="py-32 bg-gray-50 relative overflow-hidden">
+        <section id="ourstory" className="py-32 relative overflow-hidden" style={{ background: 'linear-gradient(160deg,#e0f7ff 0%,#f0faff 30%,#dbeafe 65%,#e8f5fd 100%)' }}>
 
-          {/* Background blob */}
-          <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-[300px] h-[300px] bg-yellow-100/60 rounded-full blur-[80px] pointer-events-none mix-blend-multiply" />
+          {/* Background blobs */}
+          <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full blur-[100px] pointer-events-none" style={{ background: 'rgba(0,198,247,0.18)' }} />
+          <div className="absolute -bottom-24 -left-24 w-[320px] h-[320px] rounded-full blur-[80px] pointer-events-none" style={{ background: 'rgba(45,141,205,0.20)' }} />
+          <div className="absolute top-1/2 left-1/3 w-[200px] h-[200px] rounded-full blur-[90px] pointer-events-none" style={{ background: 'rgba(56,189,248,0.14)' }} />
 
           <div className="container mx-auto px-6 max-w-7xl">
             <motion.div
@@ -373,7 +378,7 @@ function App() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.4, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute -bottom-6 -right-6 bg-white rounded-2xl px-6 py-4 shadow-xl border border-gray-100/80 z-20"
+                  className="absolute -bottom-6 -right-6 bg-[linear-gradient(180deg,#ffffff_0%,#eef8fe_100%)] rounded-2xl px-6 py-4 shadow-xl border border-brand-primary/15 z-20"
                 >
                   <p className="text-3xl font-black font-heading text-brand-primary leading-none">30+</p>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Locations</p>
@@ -401,7 +406,7 @@ function App() {
                   A Passion for Authentic Sweetness.
                 </motion.h2>
 
-                <div className="space-y-6 text-[#4a5568] text-[1.05rem] leading-[1.85] font-light">
+                <div className="space-y-6 text-brand-text-muted text-[1.05rem] leading-[1.85] font-light">
                   {[
                     '"Why should something this special be experienced only abroad?" — That question sparked Hyle Laban. We set out to bring the richness of authentic laban desserts to India, not as a foreign concept, but as a familiar, accessible, everyday joy.',
                     'Our goal is to become the most loved laban-based dessert brand in the country, known for quality, warmth, and an unforgettable taste that connects families, friends, and communities across Kerala and beyond.',
@@ -419,13 +424,13 @@ function App() {
               className="mt-24 lg:mt-32 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16"
             >
               {/* Vision */}
-              <motion.div variants={fadeUp} className="bg-white rounded-[40px] p-10 lg:p-14 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)] border border-gray-100/60 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-110" />
+              <motion.div variants={fadeUp} className="rounded-[40px] p-10 lg:p-14 relative overflow-hidden group" style={{ background: 'linear-gradient(140deg,#ffffff 0%,#e0f7ff 60%,#bae6fd 100%)', boxShadow: '0 24px 60px -18px rgba(45,141,205,0.28)', border: '1.5px solid rgba(45,141,205,0.22)' }}>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-110" />
                 <h3 className="text-3xl font-heading font-black text-[#001732] mb-6 relative z-10 flex items-center gap-4">
                   <span className="w-12 h-1 bg-brand-primary rounded-full" />
                   Vision
                 </h3>
-                <div className="space-y-4 text-[#4a5568] text-base leading-relaxed font-light relative z-10">
+                <div className="space-y-4 text-brand-text-muted text-base leading-relaxed font-light relative z-10">
                   <p>Our vision was shaped by a simple question: <br /><strong className="text-brand-primary font-medium">"Why should something this special be experienced only abroad?"</strong></p>
                   <p>We want to bring the richness of authentic laban desserts to India, not as a foreign concept, but as a familiar, accessible, everyday joy. Our goal is to become the most loved laban-based dessert brand in the country, known for quality, warmth, and an unforgettable taste that connects families, friends, and communities.</p>
                   <p>We aspire to build spaces where people feel the same excitement our founder felt in that moment when culture, flavor, and curiosity meet.</p>
@@ -434,8 +439,9 @@ function App() {
               </motion.div>
 
               {/* Mission */}
-              <motion.div variants={fadeUp} className="bg-[#001732] text-white rounded-[40px] p-10 lg:p-14 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/20 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-110" />
+              <motion.div variants={fadeUp} className="text-white rounded-[40px] p-10 lg:p-14 relative overflow-hidden group" style={{ background: 'linear-gradient(140deg,#062035 0%,#0a2540 45%,#1a3a5c 100%)', boxShadow: '0 24px 60px -18px rgba(0,0,0,0.40)' }}>
+                <div className="absolute inset-x-0 top-0 h-1 bg-brand-primary" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/22 rounded-bl-[100px] -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-110" />
                 <h3 className="text-3xl font-heading font-black mb-6 relative z-10 flex items-center gap-4">
                   <span className="w-12 h-1 bg-brand-primary rounded-full" />
                   Mission
@@ -460,7 +466,8 @@ function App() {
         </section>
 
         {/* ── Products Grid ─────────────────────────────────────── */}
-        <section id="products" className="py-32 bg-[#f2f8fc] relative">
+        <section id="products" className="py-32 relative overflow-hidden" style={{ background: 'linear-gradient(180deg,#f0f9ff 0%,#e0f2fe 40%,#f8fcff 100%)' }}>
+          <div className="absolute inset-x-0 top-0 h-40 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top, rgba(0,198,247,0.18), transparent 65%)' }} />
           <div className="container mx-auto px-6 max-w-7xl">
 
             {/* Section header */}
@@ -493,7 +500,7 @@ function App() {
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                   whileHover={{ y: -6, transition: { duration: 0.3, ease: 'easeOut' } }}
-                  className="bg-white rounded-[44px] p-6 lg:p-8 flex flex-col shadow-[0_8px_40px_-12px_rgba(0,0,0,0.06)] hover:shadow-[0_24px_60px_-12px_rgba(0,0,0,0.12)] transition-shadow duration-500 relative group"
+                  className="rounded-[44px] p-6 lg:p-8 flex flex-col transition-all duration-500 relative group" style={{ background: 'linear-gradient(150deg,#ffffff 0%,#e8f6fd 55%,#dbeefb 100%)', boxShadow: '0 12px 40px -18px rgba(45,141,205,0.30)', border: '1.5px solid rgba(45,141,205,0.18)' }}
                 >
                   {/* Image */}
                   <div className="h-[320px] md:h-[380px] flex items-center justify-center mb-6 relative w-full pt-4">
@@ -506,7 +513,7 @@ function App() {
                     />
                     {/* Badge */}
                     <div className="absolute top-4 right-4 z-20">
-                      <span className="bg-white shadow-sm text-brand-primary px-4 py-1.5 rounded-xl text-[0.6rem] font-bold uppercase tracking-widest border border-gray-100/50 block">
+                      <span className="bg-white shadow-sm text-brand-primary px-4 py-1.5 rounded-xl text-[0.6rem] font-bold uppercase tracking-widest border border-brand-primary/15 block">
                         {product.badge}
                       </span>
                     </div>
@@ -514,7 +521,7 @@ function App() {
 
                   {/* Flavor pill */}
                   <div className="flex justify-center mb-6">
-                    <span className="bg-[#4295b9] text-white text-[0.6rem] font-bold uppercase tracking-widest px-6 py-1.5 rounded-full shadow-sm">
+                    <span className="bg-brand-primary text-white text-[0.6rem] font-bold uppercase tracking-widest px-6 py-1.5 rounded-full shadow-[0_8px_18px_rgba(45,141,205,0.22)]">
                       {product.flavor}
                     </span>
                   </div>
@@ -523,7 +530,7 @@ function App() {
                   <div className="flex justify-between items-center mb-1 px-2">
                     <h4 className="text-[1.5rem] font-black font-heading text-[#001732]">{product.name}</h4>
                     <motion.div whileHover={{ rotate: 180 }} transition={{ duration: 0.3 }}>
-                      <ChevronDown className="text-gray-400" size={22} strokeWidth={2.5} />
+                      <ChevronDown className="text-brand-primary/55" size={22} strokeWidth={2.5} />
                     </motion.div>
                   </div>
                 </motion.div>
@@ -533,7 +540,8 @@ function App() {
         </section>
 
         {/* ── Stats strip ──────────────────────────────────────── */}
-        <section className="py-20 bg-white border-y border-gray-100 relative overflow-hidden">
+        <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#0a2540 0%,#1a4980 35%,#2D8DCD 65%,#00c6f7 100%)' }}>
+          <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 30% 50%,rgba(255,255,255,0.07),transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(0,198,247,0.22),transparent 45%)' }} />
           {/* Mascot 03 — floating right */}
           <motion.img
             src="./assets/Mascot 03.png"
@@ -570,8 +578,8 @@ function App() {
                   variants={fadeUp}
                   className="flex flex-col items-center"
                 >
-                  <span className="text-[3.2rem] font-black font-heading text-brand-primary leading-none">{stat.val}</span>
-                  <span className="text-sm text-gray-400 font-bold uppercase tracking-wider mt-2">{stat.label}</span>
+                  <span className="text-[3.2rem] font-black font-heading leading-none" style={{ color: '#ffffff', textShadow: '0 0 30px rgba(0,198,247,0.55)' }}>{stat.val}</span>
+                  <span className="text-sm font-bold uppercase tracking-wider mt-2" style={{ color: 'rgba(255,255,255,0.75)' }}>{stat.label}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -579,7 +587,7 @@ function App() {
         </section>
 
         {/* ── Locations — Journey Map ──────────────────────────── */}
-        <section id="locations" className="relative overflow-hidden bg-white" style={{ paddingTop: '6rem', paddingBottom: '0' }}>
+        <section id="locations" className="relative overflow-hidden" style={{ paddingTop: '6rem', paddingBottom: '0', background: 'linear-gradient(180deg,#e8f5fd 0%,#f0f9ff 50%,#ffffff 100%)' }}>
 
           {/* Section header */}
           <motion.div
@@ -597,7 +605,7 @@ function App() {
             <h2 className="text-[2.8rem] md:text-[4.5rem] font-heading font-black text-[#001732] leading-[1.05] tracking-tight mb-4">
               <AnimatedHeadline text="Hyle Laban Journey Across Chennai" className="" isMobile={isMobile} />
             </h2>
-            <p className="text-gray-500 text-lg font-light max-w-xl mx-auto mb-8">From OMR to the heart of the city — taste us near you.</p>
+            <p className="text-brand-text-muted text-lg font-light max-w-xl mx-auto mb-8">From OMR to the heart of the city, our signature laban trail is getting closer to you.</p>
 
             {/* Legend */}
             <div className="flex items-center justify-center gap-8 flex-wrap">
@@ -611,23 +619,23 @@ function App() {
                 <span className="w-7 h-7 rounded-full bg-white border-2 border-[#4295b9] flex items-center justify-center shadow-sm">
                   <MapPin size={13} className="text-[#4295b9]" strokeWidth={2.5} />
                 </span>
-                <span className="text-sm font-bold text-gray-400">Upcoming Shop</span>
+                <span className="text-sm font-bold text-brand-text-muted">Upcoming Shop</span>
               </div>
             </div>
           </motion.div>
 
           {/* Map container */}
-          <div className="relative w-full" style={{ minHeight: '560px', background: 'linear-gradient(180deg,#dff2fb 0%,#b8e3f5 40%,#e8f6fc 100%)' }}>
+          <div className="relative w-full" style={{ minHeight: '560px', background: 'linear-gradient(160deg,#cce8f8 0%,#e0f4fd 30%,#b8e0f5 60%,#d4eefb 100%)' }}>
 
             {/* Wavy water lines SVG — background atmosphere */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg">
               {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
                 <ellipse key={i} cx={100 + i * 140} cy={280 + (i % 3) * 40 - 40} rx={120} ry={55}
-                  fill="none" stroke="#27aae1" strokeWidth="1.2" strokeOpacity="0.18" />
+                  fill="none" stroke="#2D8DCD" strokeWidth="1.2" strokeOpacity="0.18" />
               ))}
               {/* City skyline silhouette top */}
               <path d="M0,140 L60,140 L60,120 L80,120 L80,100 L100,100 L100,80 L120,80 L120,100 L140,100 L140,140 L200,140 L200,110 L220,110 L220,90 L240,90 L240,110 L260,110 L260,140 L340,140 L340,115 L360,115 L360,95 L375,95 L375,75 L390,75 L390,95 L405,95 L405,115 L440,115 L440,140 L520,140 L520,115 L540,115 L540,95 L560,95 L560,115 L580,115 L580,140 L650,140 L650,110 L670,110 L670,90 L690,90 L690,70 L710,70 L710,90 L730,90 L730,110 L760,110 L760,140 L840,140 L840,115 L860,115 L860,95 L880,95 L880,115 L920,115 L920,140 L1000,140 L1000,115 L1020,115 L1020,95 L1040,95 L1040,115 L1080,115 L1080,140 L1200,140"
-                fill="#c8e8f5" stroke="#27aae1" strokeWidth="1" strokeOpacity="0.3" fillOpacity="0.4" />
+                fill="#dceef9" stroke="#2D8DCD" strokeWidth="1" strokeOpacity="0.3" fillOpacity="0.4" />
             </svg>
 
             {/* Dashed journey paths */}
@@ -639,20 +647,20 @@ function App() {
                 `}</style>
               </defs>
               {/* vertical spine */}
-              <path className="dash-path" d="M47,82 Q47,74 47,66 Q47,58 55,55 Q63,52 55,44 Q52,36 52,30 Q52,24 54,18" fill="none" stroke="#27aae1" strokeWidth="0.4" strokeOpacity="0.55" />
+              <path className="dash-path" d="M47,82 Q47,74 47,66 Q47,58 55,55 Q63,52 55,44 Q52,36 52,30 Q52,24 54,18" fill="none" stroke="#2D8DCD" strokeWidth="0.4" strokeOpacity="0.55" />
               {/* horizontal bottom */}
-              <path className="dash-path" d="M18,82 Q32,78 47,82 Q62,86 78,82" fill="none" stroke="#27aae1" strokeWidth="0.4" strokeOpacity="0.55" />
+              <path className="dash-path" d="M18,82 Q32,78 47,82 Q62,86 78,82" fill="none" stroke="#2D8DCD" strokeWidth="0.4" strokeOpacity="0.55" />
               {/* left branch */}
-              <path className="dash-path" d="M18,82 Q18,74 18,66 Q18,60 25,55 Q30,50 30,44 Q26,40 22,36 Q21,29 20,22" fill="none" stroke="#27aae1" strokeWidth="0.35" strokeOpacity="0.45" />
+              <path className="dash-path" d="M18,82 Q18,74 18,66 Q18,60 25,55 Q30,50 30,44 Q26,40 22,36 Q21,29 20,22" fill="none" stroke="#2D8DCD" strokeWidth="0.35" strokeOpacity="0.45" />
               {/* right branch */}
-              <path className="dash-path" d="M78,82 Q76,65 75,48 Q74,43 78,38 Q75,33 72,28" fill="none" stroke="#27aae1" strokeWidth="0.35" strokeOpacity="0.45" />
+              <path className="dash-path" d="M78,82 Q76,65 75,48 Q74,43 78,38 Q75,33 72,28" fill="none" stroke="#2D8DCD" strokeWidth="0.35" strokeOpacity="0.45" />
               {/* cross links */}
-              <path className="dash-path" d="M47,66 Q46,66 25,55" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
-              <path className="dash-path" d="M55,55 Q65,51 75,48" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
-              <path className="dash-path" d="M30,44 Q42,40 55,44" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
-              <path className="dash-path" d="M32,26 Q43,22 54,18" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
-              <path className="dash-path" d="M20,22 Q32,20 32,26" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
-              <path className="dash-path" d="M55,30 Q63,29 72,28" fill="none" stroke="#27aae1" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M47,66 Q46,66 25,55" fill="none" stroke="#2D8DCD" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M55,55 Q65,51 75,48" fill="none" stroke="#2D8DCD" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M30,44 Q42,40 55,44" fill="none" stroke="#2D8DCD" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M32,26 Q43,22 54,18" fill="none" stroke="#2D8DCD" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M20,22 Q32,20 32,26" fill="none" stroke="#2D8DCD" strokeWidth="0.25" strokeOpacity="0.3" />
+              <path className="dash-path" d="M55,30 Q63,29 72,28" fill="none" stroke="#2D8DCD" strokeWidth="0.25" strokeOpacity="0.3" />
             </svg>
 
             {/* Location pins — absolutely positioned using % coordinates */}
@@ -670,7 +678,7 @@ function App() {
                 >
                   {/* Label above pin */}
                   <div className={`mb-1 px-2 py-0.5 rounded-full text-[0.6rem] font-black uppercase tracking-wide whitespace-nowrap shadow-sm
-                    ${loc.starred ? 'bg-[#001732] text-white' : 'bg-white text-[#001732] border border-[#4295b9]/40'}`}>
+                    ${loc.starred ? 'bg-black text-white' : 'bg-white text-[#001732] border border-brand-primary/30'}`}>
                     {loc.name}
                     {loc.sub && <span className="ml-1 font-normal text-[0.5rem] opacity-70">{loc.sub}</span>}
                   </div>
@@ -681,11 +689,11 @@ function App() {
                     </div>
                   ) : (
                     <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-[#4295b9]/60 group-hover:border-brand-primary transition-colors">
-                      <MapPin size={12} className="text-[#4295b9]" strokeWidth={2.5} />
+                      <MapPin size={12} className="text-brand-primary" strokeWidth={2.5} />
                     </div>
                   )}
                   {/* Drop needle */}
-                  <div className={`w-px h-3 ${loc.starred ? 'bg-brand-primary' : 'bg-[#4295b9]/50'}`} />
+                  <div className={`w-px h-3 ${loc.starred ? 'bg-brand-primary' : 'bg-brand-primary/50'}`} />
                 </motion.div>
               ))}
             </div>
@@ -702,13 +710,7 @@ function App() {
             />
 
             {/* Brand watermark right */}
-            <div className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 z-10 opacity-90">
-              <img src="./assets/logo.png" alt="Hyle Laban" className="w-14 md:w-20 drop-shadow" />
-              <div className="text-center">
-                <p className="font-heading font-black text-[#001732] text-sm md:text-base leading-tight">Hyle Laban</p>
-                <p className="font-bold text-[#27aae1] text-[0.6rem] md:text-xs uppercase tracking-widest">Journey Across Chennai</p>
-              </div>
-            </div>
+
 
             {/* Bottom wave */}
             <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -717,11 +719,11 @@ function App() {
           </div>
 
           {/* Stats row below map */}
-          <div className="bg-white pt-10 pb-0">
+          <div className="pt-10 pb-0" style={{ background: 'linear-gradient(180deg,#f0f9ff 0%,#ffffff 100%)' }}>
             <div className="container mx-auto px-6 max-w-5xl">
               <motion.div
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-                className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center border border-gray-100 rounded-3xl p-8 shadow-sm"
+                className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center border border-brand-primary/12 rounded-3xl p-8 shadow-[0_20px_40px_-28px_rgba(45,141,205,0.28)] bg-white"
               >
                 {[
                   { val: `${mapLocations.filter(l => l.starred).length}`, label: 'Running Shops' },
@@ -731,7 +733,7 @@ function App() {
                 ].map((stat, i) => (
                   <motion.div key={i} variants={fadeUp} className="flex flex-col items-center">
                     <span className="text-[2.8rem] font-black font-heading text-brand-primary leading-none">{stat.val}</span>
-                    <span className="text-sm text-gray-400 font-bold uppercase tracking-wider mt-2">{stat.label}</span>
+                    <span className="text-sm text-brand-text-muted font-bold uppercase tracking-wider mt-2">{stat.label}</span>
                   </motion.div>
                 ))}
               </motion.div>
@@ -739,7 +741,7 @@ function App() {
           </div>
 
           {/* Expanding Soon — upcoming cities across India */}
-          <div className="bg-white py-14">
+          <div className="py-14" style={{ background: 'linear-gradient(180deg,#e8f5fd 0%,#f5fbff 60%,#ffffff 100%)' }}>
             <div className="container mx-auto px-6 max-w-5xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -754,7 +756,7 @@ function App() {
                   <span className="w-8 h-px bg-brand-primary" />
                 </p>
                 <h3 className="text-2xl md:text-3xl font-heading font-black text-[#001732]">Expanding Across India</h3>
-                <p className="text-gray-400 text-sm mt-2">These cities are opening soon — stay tuned!</p>
+                <p className="text-brand-text-muted text-sm mt-2">These cities are opening soon. Stay tuned for the next wave.</p>
               </motion.div>
 
               <motion.div
@@ -768,21 +770,22 @@ function App() {
                   { city: 'Mumbai', state: 'Maharashtra' },
                   { city: 'Pune', state: 'Maharashtra' },
                   { city: 'Delhi', state: 'NCR' },
+                  { city: 'Jammu Kashmir', state: 'Srinagar' },
                 ].map((loc, i) => (
                   <motion.div
                     key={loc.city}
                     variants={fadeUp}
                     whileHover={{ y: -4, scale: 1.04 }}
-                    className="flex items-center gap-3 bg-gray-50 border border-[#4295b9]/25 rounded-2xl px-6 py-4 shadow-sm hover:shadow-md hover:border-brand-primary/40 transition-all duration-300 cursor-default"
+                    className="flex items-center gap-3 rounded-2xl px-6 py-4 transition-all duration-300 cursor-default" style={{ background: 'linear-gradient(135deg,#ffffff 0%,#e0f7ff 100%)', boxShadow: '0 4px 18px -4px rgba(45,141,205,0.22)', border: '1.5px solid rgba(45,141,205,0.28)' }}
                   >
-                    <span className="w-8 h-8 rounded-full bg-[#eaf6fc] border border-[#4295b9]/30 flex items-center justify-center flex-shrink-0">
-                      <MapPin size={14} className="text-[#4295b9]" strokeWidth={2.5} />
+                    <span className="w-8 h-8 rounded-full bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center flex-shrink-0">
+                      <MapPin size={14} className="text-brand-primary" strokeWidth={2.5} />
                     </span>
                     <div className="text-left">
                       <p className="font-heading font-black text-[#001732] text-base leading-tight">{loc.city}</p>
-                      <p className="text-[0.65rem] text-gray-400 font-bold uppercase tracking-wider">{loc.state}</p>
+                      <p className="text-[0.65rem] text-brand-text-muted font-bold uppercase tracking-wider">{loc.state}</p>
                     </div>
-                    <span className="ml-2 bg-amber-50 text-amber-500 border border-amber-200 text-[0.55rem] font-black uppercase tracking-widest px-2 py-0.5 rounded-full">Soon</span>
+                    <span className="ml-2 text-white text-[0.55rem] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full" style={{ background: 'linear-gradient(90deg,#2D8DCD,#00c6f7)' }}>Soon</span>
                   </motion.div>
                 ))}
               </motion.div>
@@ -792,29 +795,30 @@ function App() {
       </main>
 
       {/* ── Footer ────────────────────────────────────────────── */}
-      <footer id="contact" className="bg-white pt-24 pb-12 border-t border-gray-100">
+      <footer id="contact" className="pt-24 pb-12 border-t border-[#2D8DCD]/30 text-white relative overflow-hidden" style={{ background: 'linear-gradient(160deg,#062035 0%,#0a2c50 35%,#0d3d6e 65%,#062035 100%)' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at top left,rgba(0,198,247,0.22),transparent 35%),radial-gradient(ellipse at bottom right,rgba(45,141,205,0.18),transparent 30%)' }} />
         <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 border-b border-gray-100 pb-16 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 border-b border-white/10 pb-16 mb-10 relative z-10">
             <div className="md:col-span-12 lg:col-span-5 flex flex-col space-y-6 pr-8">
               <div className="flex items-center gap-2">
                 <div className="w-24 md:w-32 h-20 md:h-28 flex items-center justify-center">
-                  <img src="./assets/logo.png" alt="Hyle Laban Logo" className="w-full h-full object-contain" />
+                  <img src="./assets/logo.svg" alt="Hyle Laban Logo" className="w-full h-full object-contain" />
                 </div>
-                <span className="text-3xl font-heading font-black tracking-tight text-brand-text uppercase mt-1 -ml-2">Hyle Laban</span>
+                <span className="text-3xl font-heading font-black tracking-tight text-white uppercase mt-1 -ml-2">Hyle Laban</span>
               </div>
-              <p className="text-brand-text-muted text-lg font-light leading-relaxed mt-4">
+              <p className="text-white/70 text-lg font-light leading-relaxed mt-4">
                 Pure Sweetness — delivering rich, creamy, soulful laban desserts inspired by the streets of Dubai, now in every city across India.
               </p>
               <div className="flex space-x-3 pt-4">
-                <a href="https://www.instagram.com/hyle_laban" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-brand-text border border-gray-100 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all duration-300"><Instagram size={20} /></a>
-                <a href="#" className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-brand-text border border-gray-100 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all duration-300"><Facebook size={20} /></a>
+                <a href="https://www.instagram.com/hyle_laban" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white border border-white/10 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all duration-300"><Instagram size={20} /></a>
+                <a href="#" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white border border-white/10 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all duration-300"><Facebook size={20} /></a>
               </div>
             </div>
 
             <div className="md:col-span-6 lg:col-span-3">
-              <h4 className="font-heading font-bold text-xl text-brand-text mb-6">Quick Links</h4>
-              <ul className="space-y-4 font-medium text-brand-text-muted">
-                {['Home:#home', 'Our Story:#ourstory', 'Menu & Pricing:#products', 'Franchise:#franchise'].map(link => {
+              <h4 className="font-heading font-bold text-xl text-white mb-6">Quick Links</h4>
+              <ul className="space-y-4 font-medium text-white/70">
+                {['Home:#home', 'Our Story:#ourstory', 'Menu & Pricing:#products'].map(link => {
                   const [label, href] = link.split(':');
                   return <li key={label}><a href={href} className="hover:text-brand-primary transition-colors hover:translate-x-1 inline-block transform duration-300">{label}</a></li>;
                 })}
@@ -822,16 +826,16 @@ function App() {
             </div>
 
             <div className="md:col-span-6 lg:col-span-4">
-              <h4 className="font-heading font-bold text-xl text-brand-text mb-6">Contact Us</h4>
-              <ul className="space-y-6 font-medium text-brand-text-muted">
+              <h4 className="font-heading font-bold text-xl text-white mb-6">Contact Us</h4>
+              <ul className="space-y-6 font-medium text-white/70">
                 <li className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex flex-shrink-0 items-center justify-center mr-4">
+                  <div className="w-10 h-10 rounded-full bg-brand-primary/12 flex flex-shrink-0 items-center justify-center mr-4 border border-brand-primary/25">
                     <MapPin size={18} className="text-brand-primary" />
                   </div>
                   <span className="mt-2">Kerala, India</span>
                 </li>
                 <li className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex flex-shrink-0 items-center justify-center mr-4">
+                  <div className="w-10 h-10 rounded-full bg-brand-primary/12 flex flex-shrink-0 items-center justify-center mr-4 border border-brand-primary/25">
                     <Phone size={18} className="text-brand-primary" />
                   </div>
                   <div>
@@ -840,7 +844,7 @@ function App() {
                   </div>
                 </li>
                 <li className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex flex-shrink-0 items-center justify-center mr-4">
+                  <div className="w-10 h-10 rounded-full bg-brand-primary/12 flex flex-shrink-0 items-center justify-center mr-4 border border-brand-primary/25">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-primary"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
                   </div>
                   <a href="mailto:hylelaban@gmail.com" className="hover:text-brand-primary transition-colors">hylelaban@gmail.com</a>
@@ -849,7 +853,7 @@ function App() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center text-brand-text-muted font-medium text-sm">
+          <div className="flex flex-col md:flex-row justify-between items-center text-white/55 font-medium text-sm relative z-10">
             <p>&copy; {new Date().getFullYear()} Hyle Laban. All rights reserved.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-brand-primary transition-colors">Privacy Policy</a>
